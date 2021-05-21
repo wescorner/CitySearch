@@ -1,0 +1,24 @@
+{
+  "name": "se3316-wcorner-makeup",
+  "version": "1.0.0",
+  "description": "Makeup assignment for SE3316 by Wesley Corner",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wescorner/se3316-wcorner-makeup.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wescorner/se3316-wcorner-makeup/issues"
+  },
+  "homepage": "https://github.com/wescorner/se3316-wcorner-makeup#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.10"
+  }
+}
