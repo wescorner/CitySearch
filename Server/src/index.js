@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require ('body-parser');
+const worldcities = require('../worldcities.json');
 
 //initialize express app
 const app = express();
