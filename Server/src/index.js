@@ -36,9 +36,7 @@ app.get('/api/city/:name', (req, res) => {
     console.log(`GET request for ${req.url}`);
     const name = req.params.name;
 
-    //we want to grab the object from the cities json with the specified name
-    //then return that city's iso3, lat, and lng
-
+    //declaring variables
     var cityinfo = [];
     var country;
     var lat;
@@ -46,6 +44,7 @@ app.get('/api/city/:name', (req, res) => {
     var currencycode;
     var conversionrate;
 
+    //this will find the city in the json file and grab the country name, latitude, and longitude values
     for (var i = 0; i < worldcities.length; i++){
         if(worldcities[i]["city"] == name){
             country = worldcities[i]["country"];
@@ -53,17 +52,17 @@ app.get('/api/city/:name', (req, res) => {
             lng = worldcities[i]["lng"];
         }
     }
-    cityinfo.push(country);
+    cityinfo.push(country);//push the country name to the return array
 
+    //this will find the currency code for the current city's country
     for(var j = 0; j < currencies.length; j++){
         if(currencies[j]["Country"] == country){
             currencycode = currencies[j]["Currency Code"];
         }
     }
-    cityinfo.push(currencycode);
 
-    conversionrate = currency[0]["conversion_rates"][currencycode];
-    cityinfo.push(conversionrate);
-    res.send(cityinfo);
+    conversionrate = currency[0]["conversion_rates"][currencycode];//this will use the array from the API to get conversion rate from the currency code
+    cityinfo.push(conversionrate);//push the conversion rate to the array
+    res.send(cityinfo);//send the array to user
     
 })
