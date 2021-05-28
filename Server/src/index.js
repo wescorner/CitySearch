@@ -40,7 +40,6 @@ app.get('/api/city/:name', (req, res) => {
 
     //declaring variables
     var cityinfo = [];
-    //var timezoneinfo = [];
     var country;
     var lat;
     var lng;
@@ -72,11 +71,6 @@ app.get('/api/city/:name', (req, res) => {
 
     conversionrate = currency[0]["conversion_rates"][currencycode];//this will use the array from the API to get conversion rate from the currency code
     cityinfo.push(conversionrate);//push the conversion rate to the array
-   
-    //make the timezone API call to get timezone and epoch of specified lat/lng
-
-    
-
 
     //need to make a promise chain:
     //first will retrieve offset
@@ -89,29 +83,18 @@ app.get('/api/city/:name', (req, res) => {
         request(`https://maps.googleapis.com/maps/api/timezone/json?location=${lat},${lng}&timestamp=${seconds}&key=AIzaSyAD3EPT5bdU6tzanFyeBhpOgIKuAj8cg1U`, function(error, response, body) {
         var timezoneinfo = (JSON.parse(body));
         dstoffset = timezoneinfo["dstOffset"];
-        rawoffset = timezoneinfo["rawOffset"];
-        console.log(body); 
+        rawoffset = timezoneinfo["rawOffset"]; 
         resolve(1000*(dstoffset + rawoffset + seconds));//sum offsets to take daylight savings into account
         });
     }).then(function(result){
-        
+        //converting the calculated number to a date+time string and pushing to array
         var nd = new Date(result);
         cityinfo.push(nd.toLocaleString());
 
     }).then(function(){
+        //before this, we will next put the weather calculator .then
         console.log("number 3 ran");
-        //res send 
         res.send(cityinfo);
     });
-
-    /*
-    function calcTime(offset){
-        var d = new Date();
-        var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-        var nd = new Date(utc + (3600000 * offset));
-        cityinfo.push(nd.toLocaleDateString());
-    }
-    calcTime(offset);
-    */
     
 });
