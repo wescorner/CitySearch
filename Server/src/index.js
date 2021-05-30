@@ -25,7 +25,7 @@ currency = [];
 
 //make the currency API call and push resulting object to currency array
 request('https://v6.exchangerate-api.com/v6/c062528abc5d3fae4044a83d/latest/CAD', function(error, response, body) {
-    currency.push(JSON.parse(body)); 
+    currency.push(JSON.parse(body));
 });
 
 //root
@@ -40,6 +40,7 @@ app.get('/api/city/:name', (req, res) => {
 
     //declaring variables
     var cityinfo = [];
+    var weatherinfo = [];
     var country;
     var lat;
     var lng;
@@ -48,6 +49,9 @@ app.get('/api/city/:name', (req, res) => {
     var seconds;
     var dstoffset;
     var rawoffset;
+    var temperature;
+    var humidity;
+    var windspeed;
 
     var date = new Date();//new date object
     seconds = Math.round((date.getTime() + (date.getTimezoneOffset() * 60000))/ 1000);//getting the amount of seconds since epoch, to use on timezone API call
@@ -87,14 +91,26 @@ app.get('/api/city/:name', (req, res) => {
         resolve(1000*(dstoffset + rawoffset + seconds));//sum offsets to take daylight savings into account
         });
     }).then(function(result){
+        console.log("number 2 ran");
         //converting the calculated number to a date+time string and pushing to array
         var nd = new Date(result);
         cityinfo.push(nd.toLocaleString());
+        
 
     }).then(function(){
-        //before this, we will next put the weather calculator .then
+        //getting weather info via lat and long
         console.log("number 3 ran");
-        res.send(cityinfo);
+        request(`http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon${lng}&key=d29eb4c3-4ca2-4235-875b-e4588b67f1e5`, function(error, response, body){
+        var weatherinfo = (JSON.parse(body));
+
+        cityinfo.push(weatherinfo["data"]["current"]["weather"].tp, weatherinfo["data"]["current"]["weather"].hu, weatherinfo["data"]["current"]["weather"].ws);
+        
+        });
+
+    }).then(function(){
+        //sending the final array to the user
+        setTimeout(() => {res.send(cityinfo)}, 500);//setting timeout for res.send so it doesn't send before array is updated
+        //this solution may be temporary but works for now
     });
     
 });
