@@ -39,7 +39,14 @@ app.get('/api/city/:name', (req, res) => {
     const name = req.params.name;
 
     //declaring variables
-    var cityinfo = [];
+    var cityinfo = [{
+        "country":"",
+        "conversion":"",
+        "time":"",
+        "temperature":"",
+        "humidity":"",
+        "wind":""
+    }];
     var weatherinfo = [];
     var country;
     var lat;
@@ -49,9 +56,6 @@ app.get('/api/city/:name', (req, res) => {
     var seconds;
     var dstoffset;
     var rawoffset;
-    var temperature;
-    var humidity;
-    var windspeed;
 
     var date = new Date();//new date object
     seconds = Math.round((date.getTime() + (date.getTimezoneOffset() * 60000))/ 1000);//getting the amount of seconds since epoch, to use on timezone API call
@@ -64,7 +68,7 @@ app.get('/api/city/:name', (req, res) => {
             lng = worldcities[i]["lng"];
         }
     }
-    cityinfo.push(country);//push the country name to the return array
+    cityinfo[0]["country"] = (name + " is located in the country " + country);//setting country value
 
     //this will find the currency code for the current city's country
     for(var j = 0; j < currencies.length; j++){
@@ -74,7 +78,9 @@ app.get('/api/city/:name', (req, res) => {
     }
 
     conversionrate = currency[0]["conversion_rates"][currencycode];//this will use the array from the API to get conversion rate from the currency code
-    cityinfo.push(conversionrate);//push the conversion rate to the array
+    
+    //setting cityinfo conversion value
+    cityinfo[0]["conversion"] = ("The conversion rate from CAD to " + currencycode + " is: " + conversionrate)
 
     //need to make a promise chain:
     //first will retrieve offset
@@ -92,18 +98,22 @@ app.get('/api/city/:name', (req, res) => {
         });
     }).then(function(result){
         console.log("number 2 ran");
-        //converting the calculated number to a date+time string and pushing to array
+        //converting the calculated number to a date+time string and setting value
         var nd = new Date(result);
-        cityinfo.push(nd.toLocaleString());
+
+        cityinfo[0]["time"] = ("The current date and time is: " + nd.toLocaleString());
         
 
     }).then(function(){
         //getting weather info via lat and long
         console.log("number 3 ran");
         request(`http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon${lng}&key=d29eb4c3-4ca2-4235-875b-e4588b67f1e5`, function(error, response, body){
-        var weatherinfo = (JSON.parse(body));
+        weatherinfo = (JSON.parse(body));
 
-        cityinfo.push(weatherinfo["data"]["current"]["weather"].tp, weatherinfo["data"]["current"]["weather"].hu, weatherinfo["data"]["current"]["weather"].ws);
+        //setting weather values in cityinfo object
+        cityinfo[0]["temperature"] = ("The temperature is " + weatherinfo["data"]["current"]["weather"].tp + " degrees Celcius");
+        cityinfo[0]["humidity"] = ("The humidity is " + weatherinfo["data"]["current"]["weather"].hu + "%");
+        cityinfo[0]["wind"] = ("The wind speed is " + weatherinfo["data"]["current"]["weather"].ws + "kmh");
         
         });
 
