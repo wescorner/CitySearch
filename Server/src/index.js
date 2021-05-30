@@ -88,7 +88,6 @@ app.get('/api/city/:name', (req, res) => {
     //then will retreive weather information
     //then will res.send the final result with everything
     new Promise(function(resolve, reject){
-        console.log("number 1 ran");
         //retreive offset
         request(`https://maps.googleapis.com/maps/api/timezone/json?location=${lat},${lng}&timestamp=${seconds}&key=AIzaSyAD3EPT5bdU6tzanFyeBhpOgIKuAj8cg1U`, function(error, response, body) {
         var timezoneinfo = (JSON.parse(body));
@@ -97,19 +96,36 @@ app.get('/api/city/:name', (req, res) => {
         resolve(1000*(dstoffset + rawoffset + seconds));//sum offsets to take daylight savings into account
         });
     }).then(function(result){
-        console.log("number 2 ran");
         //converting the calculated number to a date+time string and setting value
         var nd = new Date(result);
 
         cityinfo[0]["time"] = ("The current date and time is: " + nd.toLocaleString());
-        
 
-    }).then(function(){
-        //getting weather info via lat and long
-        console.log("number 3 ran");
-        request(`http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon${lng}&key=d29eb4c3-4ca2-4235-875b-e4588b67f1e5`, function(error, response, body){
+    });
+
+    new Promise(function(resolve, reject){
+        request(`https://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&key=d29eb4c3-4ca2-4235-875b-e4588b67f1e5`, function(error, response, body){
         weatherinfo = (JSON.parse(body));
+        console.log(lat);
+        console.log(lng);
+        console.log(weatherinfo);
 
+        cityinfo[0]["temperature"] = ("The temperature is " + weatherinfo["data"]["current"]["weather"].tp + " degrees Celcius");
+        cityinfo[0]["humidity"] = ("The humidity is " + weatherinfo["data"]["current"]["weather"].hu + "%");
+        cityinfo[0]["wind"] = ("The wind speed is " + weatherinfo["data"]["current"]["weather"].ws + "kmh");
+        resolve();
+        });
+    }).then(function(){
+        res.send(cityinfo);
+    });
+    /*
+    .then(function(){
+        //getting weather info via lat and long
+        request(`https://api.airvisual.com/v2/nearest_city?lat=35.98&lon=140.33&key=d29eb4c3-4ca2-4235-875b-e4588b67f1e5`, function(error, response, body){
+        weatherinfo = (JSON.parse(body));
+        console.log(lat);
+        console.log(lng);
+        console.log(weatherinfo);
         //setting weather values in cityinfo object
         cityinfo[0]["temperature"] = ("The temperature is " + weatherinfo["data"]["current"]["weather"].tp + " degrees Celcius");
         cityinfo[0]["humidity"] = ("The humidity is " + weatherinfo["data"]["current"]["weather"].hu + "%");
@@ -122,5 +138,5 @@ app.get('/api/city/:name', (req, res) => {
         setTimeout(() => {res.send(cityinfo)}, 500);//setting timeout for res.send so it doesn't send before array is updated
         //this solution may be temporary but works for now
     });
-    
+    */
 });
