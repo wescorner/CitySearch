@@ -41,6 +41,7 @@ app.listen(port, () => {
 //timezone API
 //https://maps.googleapis.com/maps/api/timezone/json?location=LAT,LNG&timestamp=0&key=AIzaSyAD3EPT5bdU6tzanFyeBhpOgIKuAj8cg1U
 
+var username;
 currency = [];
 
 //make the currency API call and push resulting object to currency array
@@ -52,6 +53,39 @@ request('https://v6.exchangerate-api.com/v6/c062528abc5d3fae4044a83d/latest/CAD'
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
+
+
+//adding a new user
+app.post('/api/createuser/:name', (req, res) => {
+    console.log(`POST request for ${req.url}`);
+    const name = req.params.name;
+
+    //function to check if user already exists
+    async function userExists(){
+        result = await client.db("CitySearch").collection("users").find({name: name}).count()>0;
+        return result;
+    }
+
+    async function createUser(){
+        var exists = await userExists();
+        if(exists){
+            res.status(400).send(`Error- ${name} is already a user!`);
+        }else{
+            await client.db("CitySearch").collection("users").insertOne({name: name});
+            res.send(`Created user ${name}`);
+        }
+    }
+    createUser(name);
+
+    
+})
+
+//adding a city to a user's saved list
+app.post('/api/city/:name', (req, res) => {
+    console.log(`POST request for ${req.url}`);
+
+
+})
 
 //creating the city inquiry get request
 app.get('/api/city/:name', (req, res) => {
