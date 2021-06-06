@@ -4,16 +4,36 @@ const worldcities = require('../worldcities.json');
 const currencies = require('../currencies.json');
 const request = require('request');
 
-
-
 //initialize express app
 const app = express();
 const port = 3000;
+
+//MongoDB connection
+const {MongoClient} = require('mongodb');
+const uri = "mongodb+srv://wescorner:golfme5665@cluster0.72r0y.mongodb.net/CitySearch?retryWrites=true&w=majority";
+const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+
+async function connect(){
+    try{    
+        await client.connect();
+        console.log('Connected to MongoDB...');
+    } catch (e){
+        console.error(e);
+    }
+}
+connect().catch(console.error);
+
+//load bodyparser middleware
+app.use(bodyParser.json());
 
 //open the port to listening
 app.listen(port, () => {
     console.log('Server is up and running on port ' + port);
 });
+
+
+
+
 
 //currency API
 //https://v6.exchangerate-api.com/v6/c062528abc5d3fae4044a83d/latest/CAD
