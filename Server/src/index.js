@@ -75,52 +75,70 @@ app.get('/api/login/:name', (req, res) => {//this is going to set the current ac
     login(name);
     
 });
-/*
-app.put('api/savecity/:city', (req, res) => {//this is going to save a city under a user's name in the db
+
+app.post('/api/savecity/:city', (req, res) => {//this is going to save a city under a user's name in the db
     console.log(`POST request for ${req.url}`);
     city = req.params.city;
-
+    
     async function cityExists(){
         result = await client.db("CitySearch").collection("users").find({cities: city}).count()>0;
         return result;
     }
 
-    async function lessThanFive(){
-        x = await client.db("CitySearch").collection("users").find({name: username});
-        if (x["cities"].length <= 5){
-            result = true;
+    async function saveCity(){
+        var exists = await cityExists();
+        if(!exists){
+            client.db("CitySearch").collection("users").updateOne(
+                {name: username},
+                {$push: {cities: city}}
+            ).then(result => {
+                res.send(`${city} has been saved.`)
+            })
         }else{
-            result = false;
+            res.send("Error saving city.");
         }
+    }
+    saveCity();
+    
+   /*
+    async function cityExists(){
+        result = await client.db("CitySearch").collection("users").find({cities: city}).count()>0;
+        console.log("exists");
+        client.db("CitySearch").collection("users").find({ name: username }, { projection: { _id: 0, name: 0 } }).toArray(function (err, result) {
+            if (err) throw err;
+            console.log("got city");
+            console.log(result);
+            cities = result[0]["cities"];
+            city.push(city);
+        });
         return result;
     }
 
     async function saveCity(){
         var exists = await cityExists();
-        var lessThan = await lessThanFive();
 
-        if(!exists && lessThan){
-            x = await client.db("CitySearch").collection("users").find({name: username});
-            cities = x["cities"];
+        console.log("updated");
+        if(!exists){
+           
             cities.push(city);
-            var query = {name: username};
-            var values = {$set: {cities}};
-            client.db("CitySearch").collection("users").updateOne(query, values, (err, res) => {
-                if (err) throw err;
-            });
+
+            client.db("CitySearch").collection("users").updateOne(
+                {name: username},
+                {
+                    $set: {cities: cities}
+                }
+            );
             res.send(`${city} has been saved.`);
         }else{
             res.status(400).send("Error adding city");
         }
     }
     saveCity();
-
-
+    */
 });
-*/
+
 app.get('/api/viewcities/', (req, res) => {//this is going to view the currently saved cities for a user
     console.log(`GET request for ${req.url}`);
-    console.log(username);
     var cities = [];
 
     client.db("CitySearch").collection("users").find({name: username}, {projection: {_id:0, name:0}}).toArray(function(err, result){
