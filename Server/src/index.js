@@ -54,6 +54,85 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
+app.get('/api/login/:name', (req, res) => {//this is going to set the current active user
+    console.log(`GET request for ${req.url}`);
+    const name = req.params.name;
+
+    async function userExists(){
+        result = await client.db("CitySearch").collection("users").find({name: name}).count()>0;
+        return result;
+    }
+    
+    async function login(){
+        var exists = await userExists();
+        if(exists){
+            username = req.params.name;
+            res.send("Successfully logged in!");
+        }else{
+            res.status(400).send(`Error- ${name} is not a user!`);
+        }
+    }
+    login(name);
+    
+});
+/*
+app.put('api/savecity/:city', (req, res) => {//this is going to save a city under a user's name in the db
+    console.log(`POST request for ${req.url}`);
+    city = req.params.city;
+
+    async function cityExists(){
+        result = await client.db("CitySearch").collection("users").find({cities: city}).count()>0;
+        return result;
+    }
+
+    async function lessThanFive(){
+        x = await client.db("CitySearch").collection("users").find({name: username});
+        if (x["cities"].length <= 5){
+            result = true;
+        }else{
+            result = false;
+        }
+        return result;
+    }
+
+    async function saveCity(){
+        var exists = await cityExists();
+        var lessThan = await lessThanFive();
+
+        if(!exists && lessThan){
+            x = await client.db("CitySearch").collection("users").find({name: username});
+            cities = x["cities"];
+            cities.push(city);
+            var query = {name: username};
+            var values = {$set: {cities}};
+            client.db("CitySearch").collection("users").updateOne(query, values, (err, res) => {
+                if (err) throw err;
+            });
+            res.send(`${city} has been saved.`);
+        }else{
+            res.status(400).send("Error adding city");
+        }
+    }
+    saveCity();
+
+
+});
+*/
+app.get('/api/viewcities/', (req, res) => {//this is going to view the currently saved cities for a user
+    console.log(`GET request for ${req.url}`);
+    console.log(username);
+    var cities = [];
+
+    client.db("CitySearch").collection("users").find({name: username}, {projection: {_id:0, name:0}}).toArray(function(err, result){
+        if(err) throw err;
+        cities = result[0]["cities"];
+        res.send(cities);
+
+    });
+
+
+});
+
 
 //adding a new user
 app.post('/api/createuser/:name', (req, res) => {
@@ -71,7 +150,7 @@ app.post('/api/createuser/:name', (req, res) => {
         if(exists){
             res.status(400).send(`Error- ${name} is already a user!`);
         }else{
-            await client.db("CitySearch").collection("users").insertOne({name: name});
+            await client.db("CitySearch").collection("users").insertOne({name: name, cities: []});
             res.send(`Created user ${name}`);
         }
     }
@@ -80,12 +159,6 @@ app.post('/api/createuser/:name', (req, res) => {
     
 })
 
-//adding a city to a user's saved list
-app.post('/api/city/:name', (req, res) => {
-    console.log(`POST request for ${req.url}`);
-
-
-})
 
 //creating the city inquiry get request
 app.get('/api/city/:name', (req, res) => {
