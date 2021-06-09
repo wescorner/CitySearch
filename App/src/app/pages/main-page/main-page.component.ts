@@ -8,7 +8,7 @@ import { SearchService } from 'src/app/search.service';
 })
 export class MainPageComponent implements OnInit {
 
-cityInfo;
+  cityInfo: any[] = [];
 
   constructor(private searchService: SearchService) { }
 
@@ -16,9 +16,10 @@ cityInfo;
   }
 
   searchCityInfo(){
-    this.searchService.searchCity('Toronto').subscribe((response: any) => {
+    return this.searchService.searchCity('Toronto').subscribe((response: any) => {
       console.log(response);
       this.cityInfo = response;
+      console.log(this.cityInfo[0].conversion);
     })
   }
 
