@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SearchService } from 'src/app/search.service';
 
 @Component({
   selector: 'app-main-page',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainPageComponent implements OnInit {
 
-  constructor() { }
+cityInfo;
+
+  constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
+  }
+
+  searchCityInfo(){
+    this.searchService.searchCity('Toronto').subscribe((response: any) => {
+      console.log(response);
+      this.cityInfo = response;
+    })
   }
 
 }

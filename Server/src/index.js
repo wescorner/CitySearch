@@ -26,6 +26,13 @@ connect().catch(console.error);
 //load bodyparser middleware
 app.use(bodyParser.json());
 
+//http header middleware
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
 //open the port to listening
 app.listen(port, () => {
     console.log('Server is up and running on port ' + port);
@@ -144,10 +151,10 @@ app.post('/api/createuser/:name', (req, res) => {
 
 
 //creating the city inquiry get request
-app.get('/api/city/:name', (req, res) => {
+app.get('/api/city/', (req, res) => {
     console.log(`GET request for ${req.url}`);
-    const name = req.params.name;
-
+    //const name = req.params.name;
+    const name = "Toronto";
     //declaring variables
     var cityinfo = [{
         "country":"",

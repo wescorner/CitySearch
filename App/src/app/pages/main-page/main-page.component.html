@@ -1,18 +1,33 @@
 <div class="centered-content">
     <div class="main-page-container">
+
         <h1 class="title has-text-primary">
             CitySearch
         </h1>
+
+        <div class="buttons">
+            <div class="control ">
+              <button class="button is-success">
+                Login
+              </button>
+              <button class="button is-success">
+                New User
+              </button>
+            </div>
+        </div>
         
         <div class="field has-addons">
             <div class="control">
-              <input class="input has-background-light" type="text" placeholder="Search City">
+              <input #cityNameInput class="input has-background-light" type="text" placeholder="Search City">
             </div>
             <div class="control">
-              <a class="button is-info">
+              <button class="button is-primary" (click)="searchCityInfo()">
                 Search
-              </a>
+              </button>
             </div>
+        </div>
+        <div>
+            Test: {{cityInfo}}
         </div>
           
     </div>
