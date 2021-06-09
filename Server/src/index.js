@@ -49,6 +49,7 @@ app.listen(port, () => {
 //https://maps.googleapis.com/maps/api/timezone/json?location=LAT,LNG&timestamp=0&key=AIzaSyAD3EPT5bdU6tzanFyeBhpOgIKuAj8cg1U
 
 var username;
+var city;
 currency = [];
 
 //make the currency API call and push resulting object to currency array
@@ -83,9 +84,10 @@ app.get('/api/login/:name', (req, res) => {//this is going to set the current ac
     
 });
 
-app.post('/api/savecity/:city', (req, res) => {//this is going to save a city under a user's name in the db
+
+
+app.post('/api/savecity/', (req, res) => {//this is going to save a city under a user's name in the db
     console.log(`POST request for ${req.url}`);
-    city = req.params.city;
     
     async function cityExists(){//checks if the city is already saved
         result = await client.db("CitySearch").collection("users").find({cities: city}).count()>0;
@@ -154,6 +156,7 @@ app.post('/api/createuser', (req, res) => {
 app.get('/api/city/:name', (req, res) => {
     console.log(`GET request for ${req.url}`);
     const name = req.params.name;
+    city = req.params.name;
     //const name = "Toronto";
     //declaring variables
     var cityinfo = [{
