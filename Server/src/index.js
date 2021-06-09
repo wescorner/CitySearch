@@ -84,7 +84,11 @@ app.get('/api/login/:name', (req, res) => {//this is going to set the current ac
     
 });
 
+app.get('/api/logout', (req, res) => {
+    console.log(`GET request for ${req.url}`);
+    username = undefined; 
 
+});
 
 app.post('/api/savecity/', (req, res) => {//this is going to save a city under a user's name in the db
     console.log(`POST request for ${req.url}`);
