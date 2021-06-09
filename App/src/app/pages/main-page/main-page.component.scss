@@ -1,11 +1,3 @@
-.centered-content{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-}
 
 .main-page-container{
     display: flex;
@@ -34,5 +26,18 @@
 }
 
 .city{
-    justify-items: flex-end;
+    width:100%;
+    height:100%;
+    max-width: 450px;
+    max-height: 160px;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    border-style: groove;
+    border-color: #25CC99;
+    padding-bottom: 50px;
+}
+
+.save{
+    justify-self: flex-end;
 }

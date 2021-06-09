@@ -74,7 +74,7 @@ app.get('/api/login/:name', (req, res) => {//this is going to set the current ac
         var exists = await userExists();
         if(exists){
             username = req.params.name;
-            res.send("Successfully logged in!");
+            res.send({message: `Successfully logged into user '${username}'`});
         }else{
             res.status(400).send(`Error- ${name} is not a user!`);
         }
@@ -125,9 +125,9 @@ app.get('/api/viewcities/', (req, res) => {//this is going to view the currently
 
 
 //adding a new user
-app.post('/api/createuser/:name', (req, res) => {
+app.post('/api/createuser', (req, res) => {
     console.log(`POST request for ${req.url}`);
-    const name = req.params.name;
+    const name = req.body.title;
 
     //function to check if user already exists
     async function userExists(){

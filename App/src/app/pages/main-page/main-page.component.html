@@ -7,11 +7,8 @@
 
         <div class="buttons">
             <div class="control ">
-              <button class="button is-success">
+              <button class="button is-success" routerLink="/login">
                 Login
-              </button>
-              <button class="button is-success">
-                New User
               </button>
             </div>
         </div>
@@ -26,13 +23,20 @@
               </button>
             </div>
         </div>
-        <div class="city">
+
+        <div class="city has-background-light">
             <p>{{cityInfo[0].conversion}}</p> 
             <p>{{cityInfo[0].country}}</p> 
             <p>{{cityInfo[0].humidity}}</p> 
             <p>{{cityInfo[0].temperature}}</p> 
             <p>{{cityInfo[0].time}}</p> 
             <p>{{cityInfo[0].wind}}</p> 
+        </div>
+
+        <div class="field save">
+            <button class="button is-primary">
+                Save City
+            </button>
         </div>
           
     </div>

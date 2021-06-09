@@ -1,1 +1,32 @@
-<p>login works!</p>
+<div class="centered-content">
+
+    <div class="modal-box">
+
+        <h1 class="title has-text-primary">
+            Login or Create User
+        </h1>
+
+        <div class="info">
+            <button class="button is-primary" (click)="login(usernameInput.value)">
+                Login
+            </button>
+    
+            <div class="field has-addons">
+                <div class="control">
+                    <input #usernameInput class="input has-background-light" type="text" placeholder="Enter Username...">
+                </div>
+            </div>
+            <button class="button is-primary" (click)="createNewUser(usernameInput.value)">
+                Create
+            </button>
+        </div>
+        
+        <button class="button" routerLink="/">
+            Return Home
+        </button>
+
+    </div>
+
+
+</div>
+

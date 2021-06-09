@@ -28,7 +28,6 @@ export class MainPageComponent implements OnInit {
     return this.searchService.searchCity(title).subscribe((response: any) => {
       console.log(response);
       this.cityInfo = response;
-      console.log(this.cityInfo[0].conversion);
     })
   }
 

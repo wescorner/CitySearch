@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SearchService } from 'src/app/search.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
   }
+
+  login(title: string){
+    return this.searchService.login(title).subscribe((response) => {
+      console.log(response);
+    });
+  }
+
+  createNewUser(title: string){
+    return this.searchService.createUser(title).subscribe((response) => {
+      console.log(response);
+    });
+  }
+  
 
 }

@@ -17,4 +17,12 @@ export class SearchService {
     return this.webReqService.get(`api/city/${title}`).pipe(map((response: any) => response));
   }
 
+  login(title: string){
+    return this.webReqService.get(`api/login/${title}`).pipe(map((response: any) => response));
+  }
+
+  createUser(title: string){
+    return this.webReqService.post('api/createuser', { title });
+  }
+
 }
