@@ -21,7 +21,7 @@
               <input #cityNameInput class="input has-background-light" type="text" placeholder="Search City">
             </div>
             <div class="control">
-              <button class="button is-primary" (click)="searchCityInfo()">
+              <button class="button is-primary" (click)="searchCityInfo(cityNameInput.value)">
                 Search
               </button>
             </div>

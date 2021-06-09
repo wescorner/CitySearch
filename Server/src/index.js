@@ -151,10 +151,10 @@ app.post('/api/createuser/:name', (req, res) => {
 
 
 //creating the city inquiry get request
-app.get('/api/city/', (req, res) => {
+app.get('/api/city/:name', (req, res) => {
     console.log(`GET request for ${req.url}`);
-    //const name = req.params.name;
-    const name = "Toronto";
+    const name = req.params.name;
+    //const name = "Toronto";
     //declaring variables
     var cityinfo = [{
         "country":"",

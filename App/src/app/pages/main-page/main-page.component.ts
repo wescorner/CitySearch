@@ -24,8 +24,8 @@ export class MainPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  searchCityInfo(){
-    return this.searchService.searchCity('Toronto').subscribe((response: any) => {
+  searchCityInfo(title: string){
+    return this.searchService.searchCity(title).subscribe((response: any) => {
       console.log(response);
       this.cityInfo = response;
       console.log(this.cityInfo[0].conversion);

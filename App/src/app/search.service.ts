@@ -14,7 +14,7 @@ export class SearchService {
 
   searchCity(title: string): Observable<City[]>{
     //send web req to search a city
-    return this.webReqService.get('api/city').pipe(map((response: any) => response));
+    return this.webReqService.get(`api/city/${title}`).pipe(map((response: any) => response));
   }
 
 }
