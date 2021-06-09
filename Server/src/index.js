@@ -187,6 +187,12 @@ app.get('/api/city/:name', (req, res) => {
     }
     cityinfo[0]["country"] = (name + " is located in the country " + country);//setting country value
 
+    europeanUnion = ["Austria", "Belgium", "Cyprus", "Estonia", "Finland", "France", "Germany", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands", "Portugal", "Slovakia", "Slovenia", "Spain"];
+
+    if(europeanUnion.includes(country)){
+        country = "European Union";
+    }
+
     //this will find the currency code for the current city's country
     for(var j = 0; j < currencies.length; j++){
         if(currencies[j]["Country"] == country){
