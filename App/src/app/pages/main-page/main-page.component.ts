@@ -8,7 +8,16 @@ import { SearchService } from 'src/app/search.service';
 })
 export class MainPageComponent implements OnInit {
 
-  cityInfo: any[] = [];
+  cityInfo: any[] = [
+    {
+      conversion: "",
+      country: "",
+      humidity: "",
+      temperature: "",
+      time: "",
+      wind: ""
+    }
+  ];
 
   constructor(private searchService: SearchService) { }
 
