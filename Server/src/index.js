@@ -106,18 +106,22 @@ app.post('/api/savecity/', (req, res) => {//this is going to save a city under a
                 {name: username},
                 {$push: {cities: city}}
             ).then(result => {
-                res.send(`${city} has been saved.`)
+                res.send(`${city} has been saved.`);
             })
         }else{//if the city is already saved
-            res.send("Error saving city.");
+            res.status(400).send("Error saving city.");
         }
     }
-    saveCity();//calling the function
+
+    if(city != undefined){
+        saveCity();//calling the function
+    }else{
+        res.send("Please login to save a city");
+    }
 });
 
 app.get('/api/viewcities/', (req, res) => {//this is going to view the currently saved cities for a user
     console.log(`GET request for ${req.url}`);
-    console.log(`username: ${username}`);
     var cities = [];
 
     //fetching and returning the array of cities to the user

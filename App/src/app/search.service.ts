@@ -33,4 +33,8 @@ export class SearchService {
     return this.webReqService.get(`api/viewcities`).pipe(map((response: any) => response));
   }
 
+  saveCity(title: string){
+    return this.webReqService.post(`api/savecity`, { title });
+  }
+
 }
