@@ -10,6 +10,7 @@ const port = 3000;
 
 //MongoDB connection
 const {MongoClient} = require('mongodb');
+const { del } = require('request');
 const uri = "mongodb+srv://wescorner:golfme5665@cluster0.72r0y.mongodb.net/CitySearch?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -118,6 +119,34 @@ app.post('/api/savecity/', (req, res) => {//this is going to save a city under a
     }else{
         res.send("Please login to save a city");
     }
+});
+
+app.delete('/api/deletecity/:name', (req, res) => {//this is going to delete a city from the user's saved list
+    console.log(`DELETE request for ${req.url}`);
+    const name = req.params.name;
+    //first check if the city is in the list
+    //if it isnt, throw err
+    //if it is, remove from user's city array
+
+    async function cityExists(){//check if the city exists in the users saved list
+        result = await client.db("CitySearch").collection("users").find({cities:name}).count()>0;
+        return result;
+    }
+
+    async function deleteCity(){
+        var exists = await cityExists();   
+        if(exists){//delete city
+            client.db("CitySearch").collection("users").updateOne(
+                {name: username},
+                {$pull: {cities: name}}
+            ).then(result => {
+                res.send(`${name} has been deleted.`);
+            }).catch(err => console.log(err));        
+        }else{//throw err
+            res.status(400).send(`${name} is not a currently saved city!`)
+        }
+    }
+    deleteCity();
 });
 
 app.get('/api/viewcities/', (req, res) => {//this is going to view the currently saved cities for a user
