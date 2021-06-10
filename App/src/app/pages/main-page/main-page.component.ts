@@ -19,6 +19,12 @@ export class MainPageComponent implements OnInit {
     }
   ];
 
+  logoutMessage: any[] = [
+    {
+      message: ""
+    }
+  ];
+
   constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
@@ -28,6 +34,13 @@ export class MainPageComponent implements OnInit {
     return this.searchService.searchCity(title).subscribe((response: any) => {
       console.log(response);
       this.cityInfo = response;
+    });
+  }
+
+  logout(){
+    return this.searchService.logout().subscribe((response) => {
+      console.log(response);
+      this.logoutMessage = response;
     })
   }
 

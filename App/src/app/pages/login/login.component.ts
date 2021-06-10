@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
     }
   ];
 
+
   createMessage = "";
 
   constructor(private searchService: SearchService) { }
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
 
     });
   }
+
 
   createNewUser(title: string){
     return this.searchService.createUser(title).subscribe((response: any) => {

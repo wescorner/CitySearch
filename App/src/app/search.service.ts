@@ -21,6 +21,10 @@ export class SearchService {
     return this.webReqService.get(`api/login/${title}`).pipe(map((response: any) => response));
   }
 
+  logout(){
+    return this.webReqService.get(`api/logout`).pipe(map((response: any) => response));
+  }
+
   createUser(title: string){
     return this.webReqService.post('api/createuser', { title });
   }
