@@ -7,7 +7,7 @@
         </h1>
 
         <div class="info">
-            <button class="button is-primary" (click)="login(usernameInput.value)" routerLink="/">
+            <button class="button is-primary" (click)="login(usernameInput.value)">
                 Login
             </button>
     
@@ -21,6 +21,7 @@
             </button>
         </div>
 
+        <p>{{loginMessage.message}}</p>
         <p>{{createMessage}}</p>
         
         <button class="button" routerLink="/">

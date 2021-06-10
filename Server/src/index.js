@@ -86,7 +86,8 @@ app.get('/api/login/:name', (req, res) => {//this is going to set the current ac
 
 app.get('/api/logout', (req, res) => {
     console.log(`GET request for ${req.url}`);
-    username = undefined; 
+    username = undefined;
+    res.send({message: 'Successfully logged out'}) 
 
 });
 

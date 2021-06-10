@@ -7,12 +7,14 @@ import { MainPageComponent } from './pages/main-page/main-page.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './pages/login/login.component';
+import { SavedCitiesComponent } from './pages/saved-cities/saved-cities.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainPageComponent,
-    LoginComponent
+    LoginComponent,
+    SavedCitiesComponent
   ],
   imports: [
     BrowserModule,
