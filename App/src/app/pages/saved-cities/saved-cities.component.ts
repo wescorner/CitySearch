@@ -8,11 +8,16 @@ import { SearchService } from 'src/app/search.service';
 })
 export class SavedCitiesComponent implements OnInit {
 
+  savedCities: any[] = [
+
+  ];
+
   constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
     this.searchService.savedCities().subscribe((response) => {
       console.log(response);
+      this.savedCities = response;
     })
   }
 
