@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SearchService } from 'src/app/search.service';
 
 @Component({
   selector: 'app-saved-cities',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SavedCitiesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
+    this.searchService.savedCities().subscribe((response) => {
+      console.log(response);
+    })
   }
 
 }

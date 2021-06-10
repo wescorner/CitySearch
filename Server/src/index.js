@@ -117,6 +117,7 @@ app.post('/api/savecity/', (req, res) => {//this is going to save a city under a
 
 app.get('/api/viewcities/', (req, res) => {//this is going to view the currently saved cities for a user
     console.log(`GET request for ${req.url}`);
+    console.log(`username: ${username}`);
     var cities = [];
 
     //fetching and returning the array of cities to the user

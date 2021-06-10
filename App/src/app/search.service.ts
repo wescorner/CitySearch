@@ -25,4 +25,8 @@ export class SearchService {
     return this.webReqService.post('api/createuser', { title });
   }
 
+  savedCities(){
+    return this.webReqService.get(`api/viewcities`).pipe(map((response: any) => response));
+  }
+
 }
