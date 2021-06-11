@@ -204,7 +204,15 @@ app.post('/api/createuser', (req, res) => {
 //creating the city inquiry get request
 app.get('/api/city/:name', (req, res) => {
     console.log(`GET request for ${req.url}`);
-    const name = req.params.name;
+    const unfilteredName = req.params.name;
+
+    function filterString(string){//changes any string to proper name format (eg. AAAaaAaaA --> Aaaaaaaaa)
+        var lowercase = string.toLowerCase();
+        return lowercase.charAt(0).toUpperCase()+lowercase.slice(1);
+    }
+
+    const name = filterString(unfilteredName);
+    
     city = req.params.name;
     //const name = "Toronto";
     //declaring variables
