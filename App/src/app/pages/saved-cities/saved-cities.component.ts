@@ -12,13 +12,23 @@ export class SavedCitiesComponent implements OnInit {
 
   ];
 
+  deleteMessage = "";
+
   constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
     this.searchService.savedCities().subscribe((response) => {
       console.log(response);
       this.savedCities = response;
-    })
+    });
+  }
+
+  deleteCity(title: string){
+    this.searchService.deleteCity(title).subscribe((response) => {
+      console.log(response);
+      this.deleteMessage = response;
+      location.reload();
+    });
   }
 
 }

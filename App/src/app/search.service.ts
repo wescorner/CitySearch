@@ -37,4 +37,7 @@ export class SearchService {
     return this.webReqService.post(`api/savecity`, { title });
   }
 
+  deleteCity(title: string){
+    return this.webReqService.delete(`api/deletecity/${title}`);
+  }
 }

@@ -22,7 +22,7 @@ export class WebRequestService {
   }
 
   delete(uri: string){
-    return this.http.delete(`${this.ROOT_URL}/${uri}`);
+    return this.http.delete(`${this.ROOT_URL}/${uri}`, {responseType: 'text'});
   }
 
 }

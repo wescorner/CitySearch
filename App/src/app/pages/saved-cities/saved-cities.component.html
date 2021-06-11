@@ -19,11 +19,11 @@
 
             <div class="field has-addons">
                 <div class="control">
-                    <input #usernameInput class="input has-background-light" type="text" placeholder="Delete a city...">
+                    <input #deleteCityInput class="input has-background-light" type="text" placeholder="Delete a city...">
                 </div>
             </div>
 
-            <button class="button is-primary" (click)="createNewUser(usernameInput.value)">
+            <button class="button is-primary" (click)="deleteCity(deleteCityInput.value)">
                 Delete
             </button>
 
