@@ -88,9 +88,14 @@ app.get('/api/login/:name', (req, res) => {//this is going to set the current ac
 
 app.get('/api/logout', (req, res) => {
     console.log(`GET request for ${req.url}`);
-    username = undefined;
-    res.send({message: 'Successfully logged out'}) 
+    if(username == undefined){
+        res.send({message: "Cannot logout, not currently logged in!"});
+    }
+    else{
+        username = undefined;
+        res.send({message: "Successfully logged out"});
 
+    }
 });
 
 app.post('/api/savecity/', (req, res) => {//this is going to save a city under a user's name in the db
