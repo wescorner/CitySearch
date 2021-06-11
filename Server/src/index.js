@@ -96,14 +96,18 @@ app.get('/api/logout', (req, res) => {
 app.post('/api/savecity/', (req, res) => {//this is going to save a city under a user's name in the db
     console.log(`POST request for ${req.url}`);
     
-    async function cityExists(){//checks if the city is already saved
-        result = await client.db("CitySearch").collection("users").find({cities: city}).count()>0;
-        return result;
+    async function eligibleCity(){//checks if the city is eligible to be saved
+        result1 = await client.db("CitySearch").collection("users").find({name: username, cities: city}).count()>0;//check if city is already saved
+        result2 = await client.db("CitySearch").collection("users").find({name: username, cities: {$size: 5}}).count()>0;//check if user has 5 cities saved
+        if(!result1 && !result2)
+            return true;
+        else
+            return false;
     }
 
     async function saveCity(){
-        var exists = await cityExists();
-        if(!exists){//if the city is not already saved
+        var canSave = await eligibleCity();
+        if(canSave){//if the city is not already saved
             client.db("CitySearch").collection("users").updateOne(
                 {name: username},
                 {$push: {cities: city}}

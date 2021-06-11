@@ -41,6 +41,7 @@ export class MainPageComponent implements OnInit {
     return this.searchService.logout().subscribe((response) => {
       console.log(response);
       this.logoutMessage = response;
+      location.reload();
     });
   }
 
