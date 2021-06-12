@@ -302,6 +302,10 @@ app.get('/api/city/:name', (req, res) => {
         resolve();
         });
     }).then(function(){
-        res.send(cityinfo);//sending final array object to user
+        if(conversionrate == undefined){
+            res.status(400).send("Please enter a valid city!");
+        }else{
+            res.send(cityinfo);//sending final array object to user
+        }
     });
 });

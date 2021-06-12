@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { SearchService } from 'src/app/search.service';
 
@@ -25,7 +26,11 @@ export class MainPageComponent implements OnInit {
     }
   ];
 
-  errorMessage = "";
+  error: any[] = [
+    {
+      error: ""
+    }
+  ];
 
   constructor(private searchService: SearchService) { }
 
@@ -39,7 +44,7 @@ export class MainPageComponent implements OnInit {
     },
     (error) => {
       console.error(error);
-      this.errorMessage = error;
+      this.error = error;
     });
   }
 
@@ -56,8 +61,8 @@ export class MainPageComponent implements OnInit {
       console.log(response);
     },
     (error) => {
-      console.error(error);
-      this.errorMessage = error;
+      console.log(error);
+      this.error = error;
     });
   }
 }
