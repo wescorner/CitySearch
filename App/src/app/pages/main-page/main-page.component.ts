@@ -61,7 +61,7 @@ export class MainPageComponent implements OnInit {
       console.log(response);
     },
     (error) => {
-      console.log(error);
+      console.error(error);
       this.error = error;
     });
   }

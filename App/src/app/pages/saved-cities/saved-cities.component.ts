@@ -28,6 +28,7 @@ export class SavedCitiesComponent implements OnInit {
       this.savedCities = response;
     },
     (error) => {
+      console.error(error);
       this.error = error;
     });
   }

@@ -88,6 +88,7 @@ app.get('/api/login/:name', (req, res) => {//this is going to set the current ac
 
 app.get('/api/logout', (req, res) => {
     console.log(`GET request for ${req.url}`);
+    city = undefined;
     if(username == undefined){
         res.send({message: "Cannot logout, not currently logged in!"});
     }
@@ -101,10 +102,18 @@ app.get('/api/logout', (req, res) => {
 app.post('/api/savecity/', (req, res) => {//this is going to save a city under a user's name in the db
     console.log(`POST request for ${req.url}`);
     
+    var errorDuplicate = false;
+    var errorFive = false;
+
     async function eligibleCity(){//checks if the city is eligible to be saved
-        result1 = await client.db("CitySearch").collection("users").find({name: username, cities: city}).count()>0;//check if city is already saved
-        result2 = await client.db("CitySearch").collection("users").find({name: username, cities: {$size: 5}}).count()>0;//check if user has 5 cities saved
-        if(!result1 && !result2)
+        duplicate = await client.db("CitySearch").collection("users").find({name: username, cities: city}).count()>0;//check if city is already saved
+        five = await client.db("CitySearch").collection("users").find({name: username, cities: {$size: 5}}).count()>0;//check if user has 5 cities saved
+        
+        if(duplicate)
+            errorDuplicate = true;
+        if(five)
+            errorFive = true;
+        if(!duplicate && !five)
             return true;
         else
             return false;
@@ -112,22 +121,27 @@ app.post('/api/savecity/', (req, res) => {//this is going to save a city under a
 
     async function saveCity(){
         var canSave = await eligibleCity();
-        if(canSave){//if the city is not already saved
+        if(canSave){//if the city eligible to be saved
             client.db("CitySearch").collection("users").updateOne(
                 {name: username},
                 {$push: {cities: city}}
             ).then(result => {
                 res.send(`${city} has been saved.`);
             })
-        }else{//if the city is already saved
-            res.status(400).send("Error saving city.");
+        }else{//if the city is not elegible to be saved
+            if(errorDuplicate)
+                res.status(400).send("Error saving city- this city is already saved!");
+            else if(errorFive)
+                res.status(400).send("Error saving city- you already have 5 cities saved!")
         }
     }
 
-    if(city != undefined){
-        saveCity();//calling the function
+    if(username == undefined){
+        res.status(400).send("Please login to save a city!");
+    }else if(city == undefined){
+        res.status(400).send("Please search a city first to save!")
     }else{
-        res.send("Please login to save a city");
+        saveCity();//calling the function
     }
 });
 
