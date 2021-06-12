@@ -163,14 +163,19 @@ app.get('/api/viewcities/', (req, res) => {//this is going to view the currently
     console.log(`GET request for ${req.url}`);
     var cities = [];
 
-    //fetching and returning the array of cities to the user
-    client.db("CitySearch").collection("users").find({name: username}, {projection: {_id:0, name:0}}).toArray(function(err, result){
+    if(username == undefined){
+        res.status(400).send("Must be logged in to view saved cities!");
+    }else{
+
+         //fetching and returning the array of cities to the user
+        client.db("CitySearch").collection("users").find({name: username}, {projection: {_id:0, name:0}}).toArray(function(err, result){
         if(err) throw err;
         cities = result[0]["cities"];
         res.send(cities);
 
     });
 
+    }
 
 });
 
@@ -213,8 +218,8 @@ app.get('/api/city/:name', (req, res) => {
 
     const name = filterString(unfilteredName);
     
-    city = req.params.name;
-    //const name = "Toronto";
+    city = name;
+
     //declaring variables
     var cityinfo = [{
         "country":"",
