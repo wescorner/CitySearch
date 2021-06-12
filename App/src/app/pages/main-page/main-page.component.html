@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <p>{{error.error}}</p>
+        <p>{{error["error"]}}</p>
 
 
         <div class="city has-background-light">
@@ -43,7 +43,7 @@
         </div>
 
         <div class="field save">
-            <button class="button is-primary" (click)="saveCity(0)">
+            <button class="button is-primary" (click)="saveCity('test')">
                 Save City
             </button>
         </div>

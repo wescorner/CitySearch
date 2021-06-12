@@ -14,7 +14,13 @@ export class SavedCitiesComponent implements OnInit {
 
   deleteMessage = "";
 
-  error: any[] = [
+  saveError: any[] = [
+    {
+      error: ""
+    }
+  ];
+
+  deleteError: any[] = [
     {
       error: ""
     }
@@ -29,7 +35,7 @@ export class SavedCitiesComponent implements OnInit {
     },
     (error) => {
       console.error(error);
-      this.error = error;
+      this.saveError = error;
     });
   }
 
@@ -38,6 +44,10 @@ export class SavedCitiesComponent implements OnInit {
       console.log(response);
       this.deleteMessage = response;
       location.reload();
+    },
+    (error) => {
+      console.error(error);
+      this.deleteError = error;
     });
   }
 
