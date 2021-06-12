@@ -20,12 +20,6 @@ export class SavedCitiesComponent implements OnInit {
     }
   ];
 
-  deleteError: any[] = [
-    {
-      error: ""
-    }
-  ];
-
   constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
@@ -47,7 +41,7 @@ export class SavedCitiesComponent implements OnInit {
     },
     (error) => {
       console.error(error);
-      this.deleteError = error;
+      window.alert(error.error);
     });
   }
 

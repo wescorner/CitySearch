@@ -14,6 +14,11 @@ export class LoginComponent implements OnInit {
     }
   ];
 
+  error: any[] = [
+    {
+      error: ""
+    }
+  ]
 
   createMessage = "";
 
@@ -26,7 +31,11 @@ export class LoginComponent implements OnInit {
     return this.searchService.login(title).subscribe((response) => {
       console.log(response);
       this.loginMessage = response;
-
+    },
+    (error) => {
+      console.error(error);
+      this.error = error;
+      window.alert(error.error);
     });
   }
 
@@ -35,6 +44,11 @@ export class LoginComponent implements OnInit {
     return this.searchService.createUser(title).subscribe((response: any) => {
       this.createMessage = response;
       console.log(response);
+    },
+    (error) => {
+      console.error(error);
+      this.error = error;
+      window.alert(error.error);
     });
   }
   

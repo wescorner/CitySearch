@@ -82,7 +82,10 @@ app.get('/api/login/:name', (req, res) => {//this is going to set the current ac
             res.status(400).send(`Error- ${name} is not a user!`);
         }
     }
-    login(name);
+    if(name != undefined)
+        login(name);
+    else
+        res.status(400).send("Please enter a username to login!");
     
 });
 
@@ -167,7 +170,7 @@ app.delete('/api/deletecity/:name', (req, res) => {//this is going to delete a c
                 res.send(`${name} has been deleted.`);
             }).catch(err => console.log(err));        
         }else{//throw err
-            res.status(400).send(`${name} is not a currently saved city!`)
+            res.status(400).send(`Error- ${name} is not a currently saved city!`)
         }
     }
     deleteCity();

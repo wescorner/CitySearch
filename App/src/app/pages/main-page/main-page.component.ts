@@ -26,12 +26,6 @@ export class MainPageComponent implements OnInit {
     }
   ];
 
-  error: any[] = [
-    {
-      error: ""
-    }
-  ];
-
   constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
@@ -44,7 +38,7 @@ export class MainPageComponent implements OnInit {
     },
     (error) => {
       console.error(error);
-      this.error = error;
+      window.alert(error.error)
     });
   }
 
@@ -59,10 +53,11 @@ export class MainPageComponent implements OnInit {
   saveCity(title: string){
     return this.searchService.saveCity(title).subscribe((response) => {
       console.log(response);
+      window.alert(response);
     },
     (error) => {
       console.error(error);
-      this.error = error;
+      window.alert(error.error);
     });
   }
 }
