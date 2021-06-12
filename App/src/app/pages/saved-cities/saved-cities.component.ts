@@ -14,12 +14,21 @@ export class SavedCitiesComponent implements OnInit {
 
   deleteMessage = "";
 
+  error: any[] = [
+    {
+      error: ""
+    }
+  ];
+
   constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
     this.searchService.savedCities().subscribe((response) => {
       console.log(response);
       this.savedCities = response;
+    },
+    (error) => {
+      this.error = error;
     });
   }
 
