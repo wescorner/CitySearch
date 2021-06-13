@@ -14,7 +14,6 @@ const {MongoClient} = require('mongodb');
 const { del } = require('request');
 const uri = "mongodb+srv://wescorner:golfme5665@cluster0.72r0y.mongodb.net/CitySearch?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-
 async function connect(){
     try{    
         await client.connect();
@@ -32,6 +31,7 @@ app.use(express.json());
 app.use(expAutoSan.all);
 
 //http header middleware
+//taken from: https://enable-cors.org/server_expressjs.html
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -44,16 +44,14 @@ app.listen(port, () => {
     console.log('Server is up and running on port ' + port);
 });
 
-
-
-
-
 //currency API
 //https://v6.exchangerate-api.com/v6/c062528abc5d3fae4044a83d/latest/CAD
 
 //timezone API
 //https://maps.googleapis.com/maps/api/timezone/json?location=LAT,LNG&timestamp=0&key=AIzaSyAD3EPT5bdU6tzanFyeBhpOgIKuAj8cg1U
 
+
+//declare globals
 var username;
 var city;
 currency = [];
@@ -86,7 +84,7 @@ app.get('/api/login/:name', (req, res) => {//this is going to set the current ac
             res.status(400).send(`Error- ${name} is not a user!`);
         }
     }
-    if(name != undefined)
+    if(name != undefined)//check if user has actually entered a username
         login(name);
     else
         res.status(400).send("Please enter a username to login!");
@@ -96,11 +94,11 @@ app.get('/api/login/:name', (req, res) => {//this is going to set the current ac
 app.get('/api/logout', (req, res) => {
     console.log(`GET request for ${req.url}`);
     city = undefined;
-    if(username == undefined){
+    if(username == undefined){//check if user is already logged in
         res.send({message: "Cannot logout, not currently logged in!"});
     }
     else{
-        username = undefined;
+        username = undefined;//reset username global variable
         res.send({message: "Successfully logged out"});
 
     }
@@ -130,7 +128,7 @@ app.post('/api/savecity/', (req, res) => {//this is going to save a city under a
     async function saveCity(){
         var canSave = await eligibleCity();
         if(canSave){//if the city eligible to be saved
-            client.db("CitySearch").collection("users").updateOne(
+            client.db("CitySearch").collection("users").updateOne(//update the document in the database
                 {name: username},
                 {$push: {cities: city}}
             ).then(result => {
@@ -144,9 +142,9 @@ app.post('/api/savecity/', (req, res) => {//this is going to save a city under a
         }
     }
 
-    if(username == undefined){
+    if(username == undefined){//if user is not logged in
         res.status(400).send("Please login to save a city!");
-    }else if(city == undefined){
+    }else if(city == undefined){//if user hasn't searched a city
         res.status(400).send("Please search a city first to save!")
     }else{
         saveCity();//calling the function
@@ -168,7 +166,7 @@ app.delete('/api/deletecity/:name', (req, res) => {//this is going to delete a c
     async function deleteCity(){
         var exists = await cityExists();   
         if(exists){//delete city
-            client.db("CitySearch").collection("users").updateOne(
+            client.db("CitySearch").collection("users").updateOne(//remove from the document in the database
                 {name: username},
                 {$pull: {cities: name}}
             ).then(result => {
@@ -230,6 +228,7 @@ app.post('/api/createuser', (req, res) => {
 //creating the city inquiry get request
 app.get('/api/city/:name', (req, res) => {
     console.log(`GET request for ${req.url}`);
+
     const unfilteredName = req.params.name;
 
     function filterString(string){//changes any string to proper name format (eg. AAAaaAaaA --> Aaaaaaaaa)
@@ -291,11 +290,7 @@ app.get('/api/city/:name', (req, res) => {
     //setting cityinfo conversion value
     cityinfo[0]["conversion"] = ("The conversion rate from CAD to " + currencycode + " is: " + conversionrate);
 
-    //need to make a promise chain:
-    //first will retrieve offset
-    //then will calculate local time based on offset result
-    //then will retreive weather information
-    //then will res.send the final result with everything
+    //first promise chain
     new Promise(function(resolve, reject){
         //retreive offset
         request(`https://maps.googleapis.com/maps/api/timezone/json?location=${lat},${lng}&timestamp=${seconds}&key=AIzaSyAD3EPT5bdU6tzanFyeBhpOgIKuAj8cg1U`, function(error, response, body) {
@@ -312,6 +307,7 @@ app.get('/api/city/:name', (req, res) => {
 
     });
 
+    //second promise chain
     new Promise(function(resolve, reject){
         request(`https://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&key=d29eb4c3-4ca2-4235-875b-e4588b67f1e5`, function(error, response, body){
         weatherinfo = (JSON.parse(body));//parsing the information received from API call to json object

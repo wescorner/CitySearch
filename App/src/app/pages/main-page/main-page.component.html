@@ -30,22 +30,33 @@
             </div>
         </div>
 
-        <div class="city has-background-light">
+        <!-- <div class="city has-background-light">
             <p>{{cityInfo[0].conversion}}</p> 
             <p>{{cityInfo[0].country}}</p> 
             <p>{{cityInfo[0].humidity}}</p> 
             <p>{{cityInfo[0].temperature}}</p> 
             <p>{{cityInfo[0].time}}</p> 
             <p>{{cityInfo[0].wind}}</p> 
+        </div> -->
+
+        <div class="card">
+            <div class="card-content">
+                <div class="content">
+                    <p>{{cityInfo[0].country}}</p>
+                    <p>{{cityInfo[0].time}}</p>
+                    <p>{{cityInfo[0].conversion}}</p>
+                    <p>{{cityInfo[0].temperature}}</p>
+                    <p>{{cityInfo[0].humidity}}</p>
+                    <p>{{cityInfo[0].wind}}</p>
+                </div>
+            </div>
         </div>
 
         <div class="field save">
             <button class="button is-primary" (click)="saveCity('test')">
                 Save City
             </button>
-        </div>
 
-        <div class="field saved">
             <button class="button is-primary" routerLink="/savedcities">
                 View Saved Cities
             </button>
