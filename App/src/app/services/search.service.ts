@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { WebRequestService } from './web-request.service';
 import { map } from 'rxjs/operators'
 
-import { City } from './city';
+import { City } from '../city';
 
 @Injectable({
   providedIn: 'root'

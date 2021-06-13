@@ -3,6 +3,7 @@ const bodyParser = require ('body-parser');
 const worldcities = require('../worldcities.json');
 const currencies = require('../currencies.json');
 const request = require('request');
+const expAutoSan = require('express-autosanitizer');
 
 //initialize express app
 const app = express();
@@ -25,7 +26,10 @@ async function connect(){
 connect().catch(console.error);
 
 //load bodyparser middleware
-app.use(bodyParser.json());
+app.use(express.json());
+
+//express sanitization middleware
+app.use(expAutoSan.all);
 
 //http header middleware
 app.use(function(req, res, next) {
@@ -112,6 +116,7 @@ app.post('/api/savecity/', (req, res) => {//this is going to save a city under a
         duplicate = await client.db("CitySearch").collection("users").find({name: username, cities: city}).count()>0;//check if city is already saved
         five = await client.db("CitySearch").collection("users").find({name: username, cities: {$size: 5}}).count()>0;//check if user has 5 cities saved
         
+        //logic for sending error messages
         if(duplicate)
             errorDuplicate = true;
         if(five)
@@ -190,8 +195,7 @@ app.get('/api/viewcities/', (req, res) => {//this is going to view the currently
         cities = result[0]["cities"];
         res.send(cities);
 
-    });
-
+        });
     }
 
 });
@@ -200,7 +204,7 @@ app.get('/api/viewcities/', (req, res) => {//this is going to view the currently
 //adding a new user
 app.post('/api/createuser', (req, res) => {
     console.log(`POST request for ${req.url}`);
-    const name = req.body.title;
+    const name = req.autosan.body.title.trim();
 
     //function to check if user already exists
     async function userExists(){
@@ -220,7 +224,7 @@ app.post('/api/createuser', (req, res) => {
     createUser(name);//calling the create user function
 
     
-})
+});
 
 
 //creating the city inquiry get request
