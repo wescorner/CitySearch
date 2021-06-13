@@ -320,6 +320,7 @@ app.get('/api/city/:name', (req, res) => {
         });
     }).then(function(){
         if(conversionrate == undefined){
+            city = undefined;
             res.status(400).send("Please enter a valid city!");
         }else{
             res.send(cityinfo);//sending final array object to user
