@@ -204,8 +204,8 @@ app.post('/api/createuser', (req, res) => {
     console.log(`POST request for ${req.url}`);
     const name = req.autosan.body.title.trim();
 
-    var count = (name.match(/is/g) || []).length;
-
+    var count = name.length;
+    console.log(count);
     if (count < 1 || count > 15) {
         res.status(400).send("Username must be between 1-15 characters!");
     } else {
