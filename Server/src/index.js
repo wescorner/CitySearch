@@ -204,24 +204,28 @@ app.post('/api/createuser', (req, res) => {
     console.log(`POST request for ${req.url}`);
     const name = req.autosan.body.title.trim();
 
-    //function to check if user already exists
-    async function userExists() {
-        result = await client.db("CitySearch").collection("users").find({ name: name }).count() > 0;
-        return result;
-    }
+    var count = (name.match(/is/g) || []).length;
 
-    async function createUser() {//creating a new user
-        var exists = await userExists();
-        if (exists) {
-            res.status(400).send(`Error- ${name} is already a user!`);
-        } else {
-            await client.db("CitySearch").collection("users").insertOne({ name: name, cities: [] });//inserting user into database
-            res.send(`Created user ${name}`);
+    if (count < 1 || count > 15) {
+        res.status(400).send("Username must be between 1-15 characters!");
+    } else {
+        //function to check if user already exists
+        async function userExists() {
+            result = await client.db("CitySearch").collection("users").find({ name: name }).count() > 0;
+            return result;
         }
+
+        async function createUser() {//creating a new user
+            var exists = await userExists();
+            if (exists) {
+                res.status(400).send(`Error- ${name} is already a user!`);
+            } else {
+                await client.db("CitySearch").collection("users").insertOne({ name: name, cities: [] });//inserting user into database
+                res.send(`Created user ${name}`);
+            }
+        }
+        createUser(name);//calling the create user function
     }
-    createUser(name);//calling the create user function
-
-
 });
 
 
@@ -234,7 +238,7 @@ app.get('/api/city/:name', (req, res) => {
     function filterString(string) {//changes any string to proper name format (eg. las vegas --> Las Vegas)
 
         var separate = string.toLowerCase().split(" ");
-        for(let i = 0; i < separate.length; i++){
+        for (let i = 0; i < separate.length; i++) {
             separate[i] = separate[i].charAt(0).toUpperCase() + separate[i].substring(1);
         }
         return separate.join(" ");
