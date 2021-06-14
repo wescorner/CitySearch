@@ -6,21 +6,24 @@
             My Saved Cities
         </h1>
 
-        <div class="cities">
-            <p>{{saveError["error"]}}</p>
-            <p>{{savedCities[0]}}</p>
-            <p>{{savedCities[1]}}</p>
-            <p>{{savedCities[2]}}</p>
-            <p>{{savedCities[3]}}</p>
-            <p>{{savedCities[4]}}</p>
+        <div class="card">
+            <div class="card-content">
+                <div class="content">
+                    <p>{{savedCities[0]}}</p>
+                    <p>{{savedCities[1]}}</p>
+                    <p>{{savedCities[2]}}</p>
+                    <p>{{savedCities[3]}}</p>
+                    <p>{{savedCities[4]}}</p>
+                </div>
+            </div>
         </div>
-     
 
         <div class="info">
 
             <div class="field has-addons">
                 <div class="control">
-                    <input #deleteCityInput class="input has-background-light" type="text" placeholder="Delete a city...">
+                    <input #deleteCityInput class="input has-background-light" type="text"
+                        placeholder="Delete a city...">
                 </div>
             </div>
 

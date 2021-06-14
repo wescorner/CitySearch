@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchService } from 'src/app/services/search.service';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-saved-cities',
@@ -20,7 +21,7 @@ export class SavedCitiesComponent implements OnInit {
     }
   ];
 
-  constructor(private searchService: SearchService) { }
+  constructor(private searchService: SearchService, private router: Router) { }
 
   ngOnInit(): void {
     this.searchService.savedCities().subscribe((response) => {
@@ -29,7 +30,8 @@ export class SavedCitiesComponent implements OnInit {
     },
     (error) => {
       console.error(error);
-      this.saveError = error;
+      window.alert(error.error);
+      this.router.navigate(['/']);
     });
   }
 
