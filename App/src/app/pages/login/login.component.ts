@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SearchService } from 'src/app/services/search.service';
 
 @Component({
@@ -22,7 +23,7 @@ export class LoginComponent implements OnInit {
 
   createMessage = "";
 
-  constructor(private searchService: SearchService) { }
+  constructor(private searchService: SearchService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -31,6 +32,8 @@ export class LoginComponent implements OnInit {
     return this.searchService.login(title).subscribe((response) => {
       console.log(response);
       this.loginMessage = response;
+      window.alert(response.message);
+      this.router.navigate(['/']);
     },
     (error) => {
       console.error(error);
