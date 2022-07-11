@@ -12,7 +12,7 @@ const port = 3000;
 //MongoDB connection
 const { MongoClient } = require('mongodb');
 const { del } = require('request');
-const uri = "mongodb+srv://wescorner:golfme5665@cluster0.72r0y.mongodb.net/CitySearch?retryWrites=true&w=majority";
+const uri = "REMOVED;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 async function connect() {
     try {
@@ -45,10 +45,10 @@ app.listen(port, () => {
 });
 
 //currency API
-//https://v6.exchangerate-api.com/v6/c062528abc5d3fae4044a83d/latest/CAD
+//https://v6.exchangerate-api.com/v6/REMOVED/latest/CAD
 
 //timezone API
-//https://maps.googleapis.com/maps/api/timezone/json?location=LAT,LNG&timestamp=0&key=AIzaSyAD3EPT5bdU6tzanFyeBhpOgIKuAj8cg1U
+//https://maps.googleapis.com/maps/api/timezone/json?location=LAT,LNG&timestamp=0&key=REMOVED
 
 
 //declare globals
@@ -57,7 +57,7 @@ var city;
 currency = [];
 
 //make the currency API call and push resulting object to currency array
-request('https://v6.exchangerate-api.com/v6/c062528abc5d3fae4044a83d/latest/CAD', function (error, response, body) {
+request('https://v6.exchangerate-api.com/v6/REMOVED/latest/CAD', function (error, response, body) {
     currency.push(JSON.parse(body));
 });
 
@@ -301,7 +301,7 @@ app.get('/api/city/:name', (req, res) => {
     //first promise chain
     new Promise(function (resolve, reject) {
         //retreive offset
-        request(`https://maps.googleapis.com/maps/api/timezone/json?location=${lat},${lng}&timestamp=${seconds}&key=AIzaSyAD3EPT5bdU6tzanFyeBhpOgIKuAj8cg1U`, function (error, response, body) {
+        request(`https://maps.googleapis.com/maps/api/timezone/json?location=${lat},${lng}&timestamp=${seconds}&key=REMVOVED`, function (error, response, body) {
             var timezoneinfo = (JSON.parse(body));//parsing the information received from API call to json object
             dstoffset = timezoneinfo["dstOffset"];
             rawoffset = timezoneinfo["rawOffset"];
@@ -317,7 +317,7 @@ app.get('/api/city/:name', (req, res) => {
 
     //second promise chain
     new Promise(function (resolve, reject) {
-        request(`https://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&key=d29eb4c3-4ca2-4235-875b-e4588b67f1e5`, function (error, response, body) {
+        request(`https://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&key=REMOVED`, function (error, response, body) {
             weatherinfo = (JSON.parse(body));//parsing the information received from API call to json object
 
             //setting weather values
