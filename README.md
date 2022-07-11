@@ -1,2 +1,2 @@
-# se3316-wcorner-makeup
- Makeup assignment for SE3316 by Wesley Corner
+# CitySearch
+Query information from cities all over the world!
